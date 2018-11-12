@@ -38,7 +38,7 @@ public class MainActivity extends RootActivity implements View.OnClickListener, 
 	//回调的请求码
 	public static final int RECODE = 111;
 
-	private static BleHelper bleHelper = BleHelper.getHelper();
+	private static BleHelper bleHelper = BleHelper.getHelper();/** 蓝牙连接，获得对象 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class MainActivity extends RootActivity implements View.OnClickListener, 
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.rightImage:
-				startActivityForResult(new Intent(this, ScanActivity.class), RECODE);
+				startActivityForResult(new Intent(this, ScanActivity.class), RECODE); /***   startActivityForResult（） 参考：    https://www.cnblogs.com/fuck1/p/5456337.html         */
 				break;
 			case  R.id.goon:
 				bleHelper.sendData();
@@ -91,9 +91,9 @@ public class MainActivity extends RootActivity implements View.OnClickListener, 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == RECODE) {
-			if (resultCode == 999) {
-				bleHelper.sendData();
+		if (requestCode == RECODE) { //请求码
+			if (resultCode == 999) {//结果码
+				bleHelper.sendData();  /**蓝牙连接对象*/
 				Toast.makeText(this, "开始接受数据,请等候", Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -102,13 +102,13 @@ public class MainActivity extends RootActivity implements View.OnClickListener, 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		bleHelper.resigistBleListener(this);
+		bleHelper.resigistBleListener(this);//注册
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		bleHelper.disConn();
+		bleHelper.disConn();//断开连接
 	}
 
 	//蓝牙数据的回调

@@ -10,7 +10,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 /**
- * Created by Liber on 2018/3/11.
+ * 权限及打开蓝牙
  */
 
 public class RootActivity extends Activity {

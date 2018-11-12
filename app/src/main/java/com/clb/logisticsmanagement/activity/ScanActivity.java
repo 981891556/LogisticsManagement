@@ -147,7 +147,7 @@ public class ScanActivity extends RootActivity implements View.OnClickListener, 
 	}
 
 	@Override
-	public void onConnectResult(final ConnResult connResult) {            //todo  内部方法外部变量
+	public void onConnectResult(final ConnResult connResult) {            //todo  内部方法访问外部变量
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

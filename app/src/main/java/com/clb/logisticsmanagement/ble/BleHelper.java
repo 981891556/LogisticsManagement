@@ -26,6 +26,17 @@ import java.util.UUID;
 public class BleHelper {
 
 	private static BleHelper helper;
+	private String mac;
+	private Context context;
+	private BluetoothGatt bluetoothGatt;
+	private boolean connFlag = false;
+
+	private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	private UUID serviceUUID = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
+	private UUID characteristicUUID = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
+	private UUID notifycUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+	private BleListener bleListener;  /**  BleListener的自定义接口，具体在下面 */
+    private BluetoothGattCharacteristic characteristic = null;/**   蓝牙4.0 Api接口类      */
 
 	private BleHelper() {
 	}
@@ -37,13 +48,7 @@ public class BleHelper {
 		return helper;
 	}
 
-	private UUID serviceUUID = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
-	private UUID characteristicUUID = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
-	private UUID notifycUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
-	private BleListener bleListener;
-
-	private BluetoothGattCharacteristic characteristic = null;
 
 	public void conn(BleDevice bleDevice, Context context) {
 		this.context = context;
@@ -51,7 +56,7 @@ public class BleHelper {
 	}
 
 	public void disConn() {
-		_dis_conn_();
+		_dis_conn_();//断开连接
 	}
 
 	//发送数据
@@ -71,11 +76,7 @@ public class BleHelper {
 		this.bleListener = bleListener;
 	}
 
-	private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	private String mac;
-	private Context context;
-	private BluetoothGatt bluetoothGatt;
-	private boolean connFlag = false;
+
 
 	private void _conn_(String mac) {
 		this.mac = mac;
@@ -83,9 +84,11 @@ public class BleHelper {
 				.connectGatt(context, false, gattCallback);
 	}
 
+
+	//断开连接
 	private void _dis_conn_() {
 		if (bluetoothGatt != null) {
-			bluetoothGatt.disconnect();
+			bluetoothGatt.disconnect();//断开连接
 		}
 	}
 
@@ -174,7 +177,7 @@ public class BleHelper {
 		}
 	};
 
-	public void onConnectResult(ConnResult connResult) {
+	public void onConnectResult(ConnResult connResult) {//连接结果返回：ConnResult自定义枚举类
 		if (bleListener != null) {
 			bleListener.onConnectResult(connResult);
 		}
@@ -229,7 +232,7 @@ public class BleHelper {
 	}
 
 	//设置监听回调
-	public static interface BleListener {
+	public static interface BleListener {  /**接口的方法都是抽象方法，都需要实现**/
 
 		void onConnectResult(ConnResult connResult);
 
